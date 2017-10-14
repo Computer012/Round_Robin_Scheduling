@@ -1,13 +1,13 @@
 package com.sangmin.OS.operatingsystem.data;
 
-public class ReadyQueue {
+public class CircularQueue {
 	private int front = 0;
 	private int rear = 0;
 	private int size = 0;
 	private Process temp = null;
 	private Process[] readyQueue = null;
 	
-	public ReadyQueue(int size) {
+	public CircularQueue(int size) {
 		/* Circular Queue는 size보다 하나 적은 수 만큼의 원소를 가질 수 있으므로 size만큼의 원소를 할당해주기 위해 size+1을 해준다. */  
 		this.size = size+1;
 		readyQueue = new Process[this.size];
