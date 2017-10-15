@@ -1,5 +1,6 @@
 package com.sangmin.OS.operatingsystem;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.sangmin.OS.operatingsystem.data.Process;
@@ -16,7 +17,7 @@ public class OperatingSystem {
 	int totalDealingTime = 0;
 
 	CircularQueue readyQueue = null;
-	CircularQueue finishQueue = null;
+	ArrayList<Process> finishList = null;
 	Scanner sc = null;
 
 	public OperatingSystem() {
@@ -47,7 +48,7 @@ public class OperatingSystem {
 	private void processReady() {
 		// 4. 준비 완료 큐에 Process들을 생성하여 넣기
 		readyQueue = new CircularQueue(nums);
-		finishQueue = new CircularQueue(nums);
+		finishList = new ArrayList<Process>(nums);
 		for (int i = 0; i < nums; i++) {
 			readyQueue.enQueue(new Process("P" + (i + 1), burst[i]));
 		}
@@ -67,9 +68,10 @@ public class OperatingSystem {
 			while (true) {
 				if (process.getRemainigTime() == 0) {
 					process.setDealingTime(process.getBurstTime() + process.getWatingTime());
+
 					totalWatingTime += process.getWatingTime();
 					totalDealingTime += process.getDealingTime();
-					finishQueue.enQueue(process);
+					finishList.add(process);
 					break;
 				}
 
@@ -86,18 +88,16 @@ public class OperatingSystem {
 	}
 
 	private void showProcessInfo() {
-		Process process = null;
 		double avgWatingTime = totalWatingTime / (double) nums;
 		double avgDealingTime = totalDealingTime / (double) nums;
 
 		// 6. 프로세스 정보를 콘솔에 출력
 		System.out.println("\nProcess     BurstTime  WaitingTime  DealingTime");
-		for (int i = 0; i < nums; i++) {
-			process = finishQueue.deQueue();
+		for (Process process : finishList) {
 			System.out.println("  " + process.getProcessName() + "\t:\t" + process.getBurstTime() + "\t" + "    "
 					+ process.getWatingTime() + "\t\t" + process.getDealingTime());
 		}
-		System.out.println(
-				"Average Waiting Time : " + avgWatingTime + "\nAverage Dealing Time : " + avgDealingTime);
+		System.out.printf("Context Switch : " + contextSwitch + "\nAverage Waiting Time : " + avgWatingTime
+				+ "\nAverage Dealing Time : " + avgDealingTime);
 	}
 }
