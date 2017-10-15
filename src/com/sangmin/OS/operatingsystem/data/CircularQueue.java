@@ -4,7 +4,6 @@ public class CircularQueue {
 	private int front = 0;
 	private int rear = 0;
 	private int size = 0;
-	private Process temp = null;
 	private Process[] readyQueue = null;
 	
 	public CircularQueue(int size) {
@@ -32,7 +31,7 @@ public class CircularQueue {
 
 	public Process deQueue() {
 		if (!isEmpty()) {
-			temp = readyQueue[front];
+			Process temp = readyQueue[front];
 			front = (front + 1) % size;
 			return temp;
 		}
